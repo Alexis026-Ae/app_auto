@@ -1,0 +1,49 @@
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+  <div class="w-full max-w-md bg-white shadow-lg rounded-lg px-8 py-10">
+    <h2 class="text-3xl font-semibold text-center text-teal-500 mb-6">Registro en RetroMarket</h2>
+
+    <% if @user.errors.any? %>
+      <div class="bg-red-100 text-red-700 p-4 rounded mb-6">
+        <% @user.errors.full_messages.each do |error| %>
+          <p class="text-sm"><%= error %></p>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%= form_with(model: @user, class: "space-y-5") do |form| %>
+      <div>
+        <%= form.label :email, "Correo electrónico", class: "block text-gray-700 text-sm font-semibold mb-2" %>
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+            <i class="fas fa-envelope"></i>
+          </span>
+          <%= form.email_field :email, required: true, class: "pl-10 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:ring-teal-300" %>
+        </div>
+      </div>
+
+      <div>
+        <%= form.label :username, "Usuario", class: "block text-gray-700 text-sm font-semibold mb-2" %>
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+            <i class="fas fa-user"></i>
+          </span>
+          <%= form.text_field :username, required: true, class: "pl-10 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:ring-teal-300" %>
+        </div>
+      </div>
+
+      <div>
+        <%= form.label :password, "Contraseña", class: "block text-gray-700 text-sm font-semibold mb-2" %>
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+            <i class="fas fa-lock"></i>
+          </span>
+          <%= form.password_field :password, required: true, class: "pl-10 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:ring-teal-300" %>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-center mt-6">
+        <%= form.submit 'Crear Usuario', class: "w-full bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-50 transition duration-300 ease-in-out" %>
+      </div>
+    <% end %>
+  </div>
+</div>

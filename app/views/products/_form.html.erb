@@ -1,0 +1,29 @@
+<!-- _form.html.erb -->
+<%= form_with model: @product, class: "space-y-6" do |form| %>
+  <% @product.errors.full_messages.each do |error| %>
+    <div class="text-red-500 text-sm"><%= error %></div>
+  <% end %>
+
+  <div>
+    <%= form.text_field :title, placeholder: t(".title_placeholder"), class: "rounded-xl border-gray-300 w-full px-4 py-2 focus:ring-2 focus:ring-cyan-400" %>
+  </div>
+
+  <div>
+    <%= form.text_area :description, placeholder: t(".description_placeholder"), class: "rounded-xl border-gray-300 w-full px-4 py-2 focus:ring-2 focus:ring-cyan-400", rows: 4 %>
+  </div>
+
+  <div>
+    <%= form.number_field :price, placeholder: t(".price_placeholder"), class: "rounded-xl border-gray-300 w-full px-4 py-2 focus:ring-2 focus:ring-cyan-400" %>
+  </div>
+
+  <div>
+    <%= form.collection_select :category_id, Category.all.order(name: :asc), :id, :name, { prompt: t(".category_placeholder") }, { class: "rounded-xl border-gray-300 w-full px-4 py-2 text-gray-600 focus:ring-2 focus:ring-cyan-400" } %>
+  </div>
+
+  <div class="border-2 border-dashed border-gray-300 rounded-xl p-4 text-center">
+    <%= form.label :photo, class: "block text-gray-600 font-semibold mb-2" %>
+    <%= form.file_field :photo, class: "w-full text-gray-600" %>
+  </div>
+
+  <%= form.submit t('.submit'), class: "w-full py-2 text-white bg-cyan-500 rounded-xl font-semibold hover:bg-cyan-600 transition-colors duration-300" %>
+<% end %>

@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+alex_switch:
+  user: alex
+  product: switch
+
+jean_driver:
+  user: jean
+  product: driver2
