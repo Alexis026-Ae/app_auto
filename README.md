@@ -1,24 +1,20 @@
-# README
+# App Auto
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Este proyecto es una aplicación web construida con **Ruby on Rails**, utilizando **SQL Server** como base de datos y diseñada con **TailwindCSS** para su interfaz de usuario. El proyecto está completamente contenerizado con **Docker**, empleando dos contenedores: uno para Rails y otro para SQL Server.
 
-Things you may want to cover:
+## Requisitos
 
-* Ruby version
+Antes de comenzar, asegúrate de tener instalados los siguientes programas en tu sistema:
+- [Docker](https://www.docker.com/) para gestionar los contenedores.
+- [Git](https://git-scm.com/) para clonar el repositorio.
+- Un navegador web para acceder a la aplicación.
 
-* System dependencies
+## Instrucciones para levantar el proyecto
 
-* Configuration
+1. **Clona el repositorio**
 
-* Database creation
+   Comienza clonando el repositorio desde GitHub en tu máquina local y entra al directorio del proyecto:
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+   ```bash
+   git clone https://github.com/tu-usuario/app_auto.git
+   cd app_auto
