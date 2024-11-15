@@ -1,128 +1,142 @@
 # App Auto
 
-Este proyecto es una aplicación web construida con **Ruby on Rails**, utilizando **SQL Server** como base de datos y diseñada con **TailwindCSS** para su interfaz de usuario. El proyecto está completamente contenerizado con **Docker**, empleando dos contenedores: uno para Rails y otro para SQL Server.
+This project is a web application built with **Ruby on Rails**, using **SQL Server** as the database, and designed with **TailwindCSS** for its user interface. The project is fully containerized with **Docker**, using two containers: one for Rails and another for SQL Server.
 
-## Requisitos
+## Requirements
 
-Antes de comenzar, asegúrate de tener instalados los siguientes programas en tu sistema:
-- [Docker](https://www.docker.com/) para gestionar los contenedores.
-- [Git](https://git-scm.com/) para clonar el repositorio.
-- Un navegador web para acceder a la aplicación.
+Before you begin, make sure you have the following programs installed on your system:
 
-## Instrucciones para levantar el proyecto
+- [Docker](https://www.docker.com/) to manage the containers.
+- [Git](https://git-scm.com/) to clone the repository.
+- A web browser to access the application.
 
-1. **Clona el repositorio**
+## Instructions to set up the project
 
-   Comienza clonando el repositorio desde GitHub en tu máquina local y entra al directorio del proyecto:
+1. **Clone the repository**
+
+   Clone the repository from GitHub to your local machine and navigate to the project directory:
 
    ```bash
-   git clone https://github.com/tu-usuario/app_auto.git
+   git clone https://github.com/your-username/app_auto.git
    cd app_auto
+   ```
 
-Crea y ejecuta el contenedor de SQL Server
+2. **Create and run the SQL Server container**
 
-Ejecuta el siguiente comando para crear un contenedor con SQL Server:
+   Run the following command to create a container with SQL Server:
 
-bash
-Copiar código
-docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=YourStrong@Passw0rd" \
--p 1433:1433 --name sqlserver2019 -d mcr.microsoft.com/mssql/server:2019-latest
-Este comando configurará un contenedor que:
+   ```bash
+   docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=YourStrong@Passw0rd" \
+   -p 1433:1433 --name sqlserver2019 -d mcr.microsoft.com/mssql/server:2019-latest
+   ```
 
-Acepta los términos de licencia de SQL Server.
-Define una contraseña para el usuario SA.
-Expone el puerto 1433 para permitir conexiones externas.
-Nota: Cambia YourStrong@Passw0rd por una contraseña segura.
+   This command will:
+   - Accept the SQL Server license terms.
+   - Set a password for the SA user.
+   - Expose port 1433 to allow external connections.
 
-Construye y ejecuta el contenedor de Rails
+   Note: Replace `YourStrong@Passw0rd` with a secure password.
 
-Primero, construye la imagen Docker para la aplicación Rails:
+3. **Build and run the Rails container**
 
-bash
-Copiar código
-docker build -t rubybasico:v1 .
-Luego, inicia el contenedor con el siguiente comando:
+   First, build the Docker image for the Rails application:
 
-bash
-Copiar código
-docker run -it -v $(pwd):/usr/src/app -p 3000:3000 --name app_auto --link sqlserver2019 rubybasico:v1 bash
-Este comando vincula el contenedor de Rails al directorio actual, expone el puerto 3000 para acceder a la aplicación y conecta este contenedor al de SQL Server.
+   ```bash
+   docker build -t rubybasico:v1 .
+   ```
 
-Instala las gemas y dependencias
+   Then, start the container with the following command:
 
-Dentro del contenedor de Rails, ejecuta:
+   ```bash
+   docker run -it -v $(pwd):/usr/src/app -p 3000:3000 --name app_auto --link sqlserver2019 rubybasico:v1 bash
+   ```
 
-bash
-Copiar código
-bundle install
-Configura TailwindCSS
+   This command:
+   - Mounts the current directory to the container's `/usr/src/app` directory.
+   - Exposes port 3000 to access the application.
+   - Connects the Rails container to the SQL Server container.
 
-Asegúrate de instalar las dependencias necesarias para TailwindCSS dentro del contenedor:
+4. **Install gems and dependencies**
 
-bash
-Copiar código
-yarn install
-Configura la base de datos
+   Inside the Rails container, run:
 
-Edita el archivo config/database.yml para que se conecte al contenedor de SQL Server. Un ejemplo básico sería:
+   ```bash
+   bundle install
+   ```
 
-yaml
-Copiar código
-default: &default
-  adapter: sqlserver
-  host: sqlserver2019
-  username: SA
-  password: YourStrong@Passw0rd
-  database: app_auto_development
+5. **Configure TailwindCSS**
 
-development:
-  <<: *default
-Luego, crea y migra la base de datos ejecutando:
+   Ensure you install the necessary dependencies for TailwindCSS inside the container:
 
-bash
-Copiar código
-rails db:create
-rails db:migrate
-Inicia el servidor de Rails
+   ```bash
+   yarn install
+   ```
 
-Finalmente, inicia el servidor dentro del contenedor:
+6. **Configure the database**
 
-bash
-Copiar código
-rails s -b 0.0.0.0
-La aplicación estará disponible en tu navegador en la URL http://localhost:3000.
+   Edit the `config/database.yml` file to connect to the SQL Server container. A basic example would be:
 
-Reinicia los contenedores si es necesario
+   ```yaml
+   default: &default
+     adapter: sqlserver
+     host: sqlserver2019
+     username: SA
+     password: YourStrong@Passw0rd
+     database: app_auto_development
 
-Para reiniciar el contenedor de SQL Server:
+   development:
+     <<: *default
+   ```
 
-bash
-Copiar código
-docker restart sqlserver2019
-Para reiniciar el contenedor de Rails:
+   Then, create and migrate the database:
 
-bash
-Copiar código
-docker restart app_auto
-Información adicional
+   ```bash
+   rails db:create
+   rails db:migrate
+   ```
 
-Si necesitas modificar el diseño de la aplicación, asegúrate de trabajar en el directorio local y reiniciar los contenedores según sea necesario.
+7. **Start the Rails server**
 
-Estructura del proyecto
-El proyecto sigue la estructura estándar de Rails:
+   Finally, start the server inside the container:
 
-app/: Contiene los controladores, modelos y vistas.
-config/: Configuraciones del entorno y la base de datos.
-db/: Migraciones y esquemas de la base de datos.
-Créditos
-Este proyecto fue desarrollado para fines educativos y puede ser modificado libremente.
+   ```bash
+   rails s -b 0.0.0.0
+   ```
 
-Licencia
-El proyecto está bajo la Licencia MIT.
+   The application will be available in your browser at `http://localhost:3000`.
 
-¡Disfruta trabajando con App Auto!
+8. **Restart the containers if necessary**
 
-markdown
-Copiar código
+   To restart the SQL Server container:
 
-Este archivo **contiene todo en un solo bloque** con pasos continuados, listo para copiar y pegar.
+   ```bash
+   docker restart sqlserver2019
+   ```
+
+   To restart the Rails container:
+
+   ```bash
+   docker restart app_auto
+   ```
+
+## Additional Information
+
+If you need to modify the application's design, ensure you work in the local directory and restart the containers as needed.
+
+### Project Structure
+
+The project follows the standard Rails structure:
+
+- `app/`: Contains the controllers, models, and views.
+- `config/`: Configurations for the environment and database.
+- `db/`: Migrations and database schemas.
+
+### Credits
+
+This project was developed for educational purposes and can be freely modified.
+
+### License
+
+The project is licensed under the MIT License.
+
+Enjoy working with App Auto!
